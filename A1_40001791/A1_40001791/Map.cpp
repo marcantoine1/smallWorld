@@ -23,13 +23,70 @@ void Map::setNumberMembers(int number)
 
 Region * Map::getRegionMembersAt(int x)
 {
-	return regionMembers.at(x);
+	return regions.at(x);
 }
 
 void Map::setRegionMembersAt(int x, Region * region)
 {
-	regionMembers.at(x) = region;
+	regions.at(x) = region;
 }
+
+void Map::setMap(vector<Region*> newRegion)
+{
+	regions = newRegion;
+}
+
+void Map::setPlayers(vector<Player*> newPlayer)
+{
+	players = newPlayer;
+}
+
+vector<Player*> Map::getPlayers()
+{
+	return players;
+}
+
+void Map::nextTurn()
+{
+	currentTurn++;
+}
+
+int Map::getCurrentTurn()
+{
+	return currentTurn;
+}
+
+void Map::setNumberTurns(int nbturn)
+{
+	numberTurns = nbturn;
+}
+
+int Map::getNumberTurns()
+{
+	return numberTurns;
+}
+
+void Map::setNextPlayer()
+{
+	if (currentPlayer == players.size()) {
+		currentPlayer = 0;
+	}
+	else {
+		currentPlayer++;
+	}
+}
+
+int Map::getCurrentPlayer()
+{
+	return currentPlayer;
+}
+
+vector<Region*> Map::getRegions()
+{
+	return regions;
+}
+
+
 
 
 

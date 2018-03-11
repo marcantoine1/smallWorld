@@ -97,6 +97,17 @@ void Region::setRegionSpecial(Special_Tile * aSpecial)
 	st = aSpecial;
 }
 
+void Region::setOtherTypeTile(vector<OtherTiles*> ot)
+{
+	otherTileTypes = ot;
+}
+
+vector<Region*> Region::getAdjacencies()
+{
+	return adjacency;
+}
+
+
 bool Region::isLinked()
 {
 	return linked;
@@ -121,3 +132,50 @@ int Region::getAdjacencySize()
 {
 	return numberAdjacency;
 }
+
+vector<OtherTiles*> Region::getOtherTiles()
+{
+	return otherTileTypes;
+}
+
+RaceTokens * Region::getRaceToken()
+{
+	return rt;
+}
+
+void Region::setRaceToken(RaceTokens * raceToken)
+{
+	rt = raceToken;
+}
+
+RegionType * Region::getRegionType()
+{
+	return type;
+}
+
+Special_Power_Tile * Region::getSpecialPowerTile()
+{
+	return spt;
+}
+
+Special_Tile * Region::getSpecialTile()
+{
+	return st;
+}
+
+void Region::setSpecialPowerTile(Special_Power_Tile * s)
+{
+	spt = s;
+}
+
+bool Region::getIsEdge()
+{
+	return isEdge;
+}
+
+void Region::setIsEdge(bool edge)
+{
+	isEdge = edge;
+}
+
+

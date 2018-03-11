@@ -12,7 +12,11 @@ class Map
 
 private:
 	int numberRegions;
-	vector <Region*> regionMembers;
+	vector <Region*> regions;
+	vector <Player *> players;
+	int currentPlayer = 0;
+	int numberTurns = 0;
+	int currentTurn = 1;
 public:
 	Map();
 	~Map();
@@ -22,5 +26,17 @@ public:
 	Region* getRegionMembersAt(int);
 	void setRegionMembersAt(int, Region*);
 
+	void setMap(vector <Region *> newRegion);
+	void setPlayers(vector <Player *> newPlayer);
+	vector<Player *> getPlayers();
+
+
+	void nextTurn();
+	int getCurrentTurn();
+	void setNumberTurns(int nbturn);
+	int getNumberTurns();
+	void setNextPlayer();
+	int getCurrentPlayer();
+	vector<Region *> getRegions();
 };
 

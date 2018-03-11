@@ -21,7 +21,7 @@ Dice_Roll::~Dice_Roll()
 
 }
 
-void Dice_Roll::roll()
+int Dice_Roll::roll()
 {
 	int val = (rand() % 6 + 1);
 	if (val == 4 || val == 5 || val == 6)
@@ -29,6 +29,7 @@ void Dice_Roll::roll()
 	value_count[val]++;
 	++diceRollCount;
 	set_percentage();
+	return val;
 }
 
 void Dice_Roll::set_percentage()

@@ -18,7 +18,7 @@ bool MapLoader::validMap(string path)
 	string output;
 	string numRegion;
 	int numberOfRegions = 0;
-	regex r("^[0-9]{1,2};[0-9]{1,2}(,[0-9]{1,2})*;[0-1]{1};[1-9]{1,2};[1-9]{1,2}$");
+	regex r("^[0-9]{1,2};[0-9]{1,2}(,[0-9]{1,2})*;[0-1]{1};[1-9]{1,2};[1-9]{1,2};[0-9]{1,2}(,[0-9]{1,2})*;[0-1]{1}$");
 	//First run to verify format of the file
 	if (myReadFile.is_open()) {
 		while (!myReadFile.eof()) {
@@ -34,7 +34,7 @@ bool MapLoader::validMap(string path)
 		}
 	}
 	myReadFile.close();
-	string arr[5];
+	string arr[7];
 	regions.resize(numberOfRegions);
 	for (size_t l = 0; l < numberOfRegions; l++)
 	{
@@ -52,7 +52,7 @@ bool MapLoader::validMap(string path)
 			myReadFile >> output;
 			std::replace(output.begin(), output.end(), ';', ' ');
 			stringstream ssin(output);
-			while (ssin.good() && j < 5) {
+			while (ssin.good() && j < 7) {
 				ssin >> arr[j];
 				++j;
 			}
@@ -106,7 +106,7 @@ bool MapLoader::validMap(string path)
 			stringstream special(arr[4]);
 			special >> specialType;
 
-			if (regionType < 1 || regionType > 5) {
+			if (regionType < 1 || regionType > 6) {
 				cout << "The region type is invalid" << endl;
 				for (size_t b = 0; b < regions.size(); b++)
 				{
@@ -126,6 +126,68 @@ bool MapLoader::validMap(string path)
 				myReadFile.close();
 				return false;
 			}
+			vector<int> arrayOtherTiles;
+			std::replace(arr[5].begin(), arr[5].end(), ',', ' ');
+			stringstream ssin3(arr[5]);
+			string temp2 = "";
+			int other = 0;
+			while (ssin3 >> temp2) {
+				stringstream v(temp2);
+				v >> other;
+				arrayOtherTiles.push_back(other);
+			}
+			for (size_t g = 0; g < arrayOtherTiles.size(); g++)
+			{
+				if (arrayOtherTiles.at(g) < 1 || arrayOtherTiles.at(g) > 5) {
+					cout << "The region other tile is invalid" << endl;
+					for (size_t b = 0; b < regions.size(); b++)
+					{
+						delete(regions.at(b));
+					}
+					regions.clear();
+					myReadFile.close();
+					return false;
+				}
+			}
+			if(arr[6] =="1"){
+				regions.at(i)->setIsEdge(true);
+			}
+			else if (arr[6] == "0") {
+				regions.at(i)->setIsEdge(false);
+			}
+			else {
+				cout << "The region special tile is invalid" << endl;
+				for (size_t b = 0; b < regions.size(); b++)
+				{
+					delete(regions.at(b));
+				}
+				regions.clear();
+				myReadFile.close();
+				return false;
+			}
+
+			vector<OtherTiles *> ot;
+			ot.resize(arrayOtherTiles.size());
+			for (size_t a = 0; a < arrayOtherTiles.size(); a++)
+			{
+				switch (arrayOtherTiles.at(a)) {
+				case 1:
+					ot.at(a) = new Standard();
+					break;
+				case 2:
+					ot.at(a) = new Mine();
+					break;
+				case 3:
+					ot.at(a) = new Magic();
+					break;
+				case 4:
+					ot.at(a) = new FarmLand();
+					break;
+				case 5:
+					ot.at(a) = new Cavern();
+					break;
+				};
+			}
 			RegionType * rt;
 			Special_Tile * st;
 			switch (regionType) {
@@ -144,6 +206,8 @@ bool MapLoader::validMap(string path)
 			case 5 :
 				rt = new Water();
 				break;
+			case 6:
+				rt = new Forest_Type();
 			default:
 				break;
 			};
@@ -172,6 +236,7 @@ bool MapLoader::validMap(string path)
 			regions.at(i)->setArmy(armyUnit);
 			regions.at(i)->setRegionSpecial(st);
 			regions.at(i)->setRegionType(rt);
+			regions.at(i)->setOtherTypeTile(ot);
 			for (size_t n = 0; n < array.size(); n++)
 			{
 				regions.at(i)->setAdjacencyAt(n, regions.at(array.at(n)));
@@ -194,11 +259,11 @@ bool MapLoader::validMap(string path)
 	}
 	
 	cout << "The map is valid" << endl;
-	
+	mapRegion = regions;
 	return true;
 }
 
-Map * MapLoader::loadMap()
+vector<Region *>  MapLoader::loadMap()
 {
-	return nullptr;
+	return mapRegion;
 }

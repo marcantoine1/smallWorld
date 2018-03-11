@@ -13,7 +13,7 @@ private:
 public:
 	Dice_Roll();
 	~Dice_Roll();
-	void roll();
+	int roll();
 	void set_percentage();
 	vector<double>  get_percentage();
 	vector<int> get_values();
