@@ -57,7 +57,7 @@ public:
 class RatmenTokens : public RaceTokens
 {
 private:
-	string name = "Ratment";
+	string name = "Ratmen";
 public:
 	virtual string getName() {
 		return name;

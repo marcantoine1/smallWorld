@@ -99,7 +99,7 @@ public:
 class Ratmen : public Race
 {
 private:
-	string name = "Ratment";
+	string name = "Ratmen";
 	int reinforcements = 8;
 public:
 	virtual void specialAbility()

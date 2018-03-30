@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 class Race;
 class Region;
 class Special_Power;
@@ -10,10 +9,16 @@ class Map;
 #include "Dice_Roll.h"
 #include <cstdlib>
 #include "Map.h"
-class Player
+#include "PhaseObserver.h"
+#include "Strategy.h"
+#include "GameStatisticObserver.h"
+class Strategy;
+using namespace std;
+class Player : PhaseObserver ,GameStatisticObserver
 {
 
 private:
+	Strategy * strat;
 	Dice_Roll * dr;
 	vector<Region *> regions;
 	int currencyTokens[4] = { 0,0,0,5};
@@ -27,12 +32,23 @@ private:
 	int nbOfConquests = 0;
 	bool inDecline = false;
 	bool troopRedeployment = false;
+	string phase;
 public:
 	Player();
 	~Player();
+	void setStrategy(Strategy * strategy);
+	void Update(int turn);
+	void Update(string phase);
+	void Update(vector<double> percent);
+	void Update(vector<string>scoreResult);
+	bool continueConquest();
+	vector<Region*> getAvailableRegions(Map *& m);
+	void showAvailableRegions(vector<Region*> av);
+	void AIOtherConquest(Map *& m);
+	void AIFirstConquest(Map *& m);
 	void picks_race(vector<Race *> raceVector,vector<Special_Power *> powerVector);
 	bool conquers(Region *& r);
-	void scores();
+	vector<string> scores();
 	bool getDeclineStatus();
 	void setDeclineStatus(bool status);
 	void setRedeploymentStatus(bool status);
@@ -41,6 +57,7 @@ public:
 	Race * getDeclineRace();
 	Special_Power * getPower();
 	Special_Power * getDeclinePower();
+	vector<Region *> getRegions();
 	int totalMoney();
 	void setCurrencyTokens();
 	void firstConquest(Map *&m);

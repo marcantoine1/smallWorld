@@ -74,7 +74,7 @@ bool MapChecker::isMapLinked()
 	while (initCounter < linkedCounter) // if linkedCounter keeps growing, keep going
 	{
 		initCounter = linkedCounter; //update inital counter
-		for (int i = 0; i < numberRegion; i++) // Cycle through all the region nodes
+		for (int i = 0; i < regionVector.size(); i++) // Cycle through all the region nodes
 		{
 			if (regionVector.at(i)->isLinked()) // if country is linked -----------------------------
 			{
@@ -85,7 +85,7 @@ bool MapChecker::isMapLinked()
 						regionVector.at(i)->getAdjacencyAt(j)->setLinked(true); // link them
 						linkedCounter++;										// add to the counter
 
-						if (linkedCounter == numberRegion)						//if counter is equal to the number of region exit function
+						if (linkedCounter == regionVector.size())						//if counter is equal to the number of region exit function
 						{
 							cout << "all regions are linked" << endl;
 							return true;
@@ -103,7 +103,7 @@ bool MapChecker::isMapLinked()
 						regionVector.at(i)->setLinked(true); // set the region to linked
 						linkedCounter++;					// add to the counter
 
-						if (linkedCounter == numberRegion)	// if number of linked regions is equal to the total number of regions return true
+						if (linkedCounter == regionVector.size())	// if number of linked regions is equal to the total number of regions return true
 						{
 							cout << "all regions are linked" << endl;
 							return true;
@@ -117,7 +117,7 @@ bool MapChecker::isMapLinked()
 		}
 	}
 
-	if (linkedCounter < numberRegion)
+	if (linkedCounter < regionVector.size())
 	{
 		cout << "Not all regions are linked" << endl;
 		return false;
