@@ -34,6 +34,7 @@ private:
 	bool isEdge;
 
 public:
+	int regionNumber;
 	Region();
 	Region(RegionType*,Special_Tile *);
 	Region(RegionType*,Special_Tile *, int);

@@ -16,6 +16,7 @@ private:
 	int numberRegions;
 	vector <Region*> regions;
 	vector <Player *> players;
+	
 	Player * playerObs;
 	Map * mapObs;
 	int currentPlayer = 0;
@@ -27,6 +28,8 @@ private:
 public:
 	Map();
 	~Map();
+	vector <Race *> r;
+	vector <Special_Power *> sp;
 	int getNumberMembers();
 	void setNumberMembers(int);
 	void Attach(Player * p);

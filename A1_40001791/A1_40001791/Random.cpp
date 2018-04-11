@@ -39,7 +39,12 @@ int Random::conquer(vector<Region *>av, int & unitToSpend, int reinforcements)
 			DefenderToken++;
 		}
 	}
-	unitToSpend = DefenderToken + 1;
+	if (unitToSpend <= reinforcements) {
+		unitToSpend = DefenderToken + 1;
+	}
+	else {
+		return 100;
+	}
 }
 else {
 	return 100;

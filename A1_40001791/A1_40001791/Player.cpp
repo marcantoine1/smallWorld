@@ -91,33 +91,13 @@ void Player::picks_race(vector<Race *> raceVector, vector<Special_Power *> power
 	if (strat == nullptr) {
 		int number;
 		do {
-			cin >> number;
-			if (cin.good())
-			{
-				switch (number) {
-				case 1:
-					if (r[0] == nullptr) {
-						r[0] = choiceRace.at(0);
-						sp[0] = choicePower.at(0);
-						reinforcements = r[0]->getReinforcements();
-						reinforcements += sp[0]->getReinforcements();
-						if (sp[0]->getName() == "Wealthy") {
-							currencyTokens[3] += 7;
-						}
-						currentRace = 0;
-					}
-					else {
-						if (r[1] == nullptr) {
-							r[1] = choiceRace.at(0);
-							sp[1] = choicePower.at(0);
-							reinforcements = r[1]->getReinforcements();
-							reinforcements += sp[1]->getReinforcements();
-							if (sp[1]->getName() == "Wealthy") {
-								currencyTokens[3] += 7;
-							}
-							currentRace = 1;
-						}
-						else {
+			try {
+				cin >> number;
+				if (cin.good())
+				{
+					switch (number) {
+					case 1:
+						if (r[0] == nullptr) {
 							r[0] = choiceRace.at(0);
 							sp[0] = choicePower.at(0);
 							reinforcements = r[0]->getReinforcements();
@@ -127,26 +107,10 @@ void Player::picks_race(vector<Race *> raceVector, vector<Special_Power *> power
 							}
 							currentRace = 0;
 						}
-					}
-					remainingReinforcements = reinforcements;
-					valid = true;
-					break;
-				case 2:
-					if (totalMoney() >= 1) {
-						if (r[0] == nullptr) {
-							r[0] = choiceRace.at(1);
-							sp[0] = choicePower.at(1);
-							reinforcements = r[0]->getReinforcements();
-							reinforcements += sp[0]->getReinforcements();
-							if (sp[0]->getName() == "Wealthy") {
-								currencyTokens[3] += 7;
-							}
-							currentRace = 0;
-						}
 						else {
 							if (r[1] == nullptr) {
-								r[1] = choiceRace.at(1);
-								sp[1] = choicePower.at(1);
+								r[1] = choiceRace.at(0);
+								sp[1] = choicePower.at(0);
 								reinforcements = r[1]->getReinforcements();
 								reinforcements += sp[1]->getReinforcements();
 								if (sp[1]->getName() == "Wealthy") {
@@ -155,6 +119,22 @@ void Player::picks_race(vector<Race *> raceVector, vector<Special_Power *> power
 								currentRace = 1;
 							}
 							else {
+								r[0] = choiceRace.at(0);
+								sp[0] = choicePower.at(0);
+								reinforcements = r[0]->getReinforcements();
+								reinforcements += sp[0]->getReinforcements();
+								if (sp[0]->getName() == "Wealthy") {
+									currencyTokens[3] += 7;
+								}
+								currentRace = 0;
+							}
+						}
+						remainingReinforcements = reinforcements;
+						valid = true;
+						break;
+					case 2:
+						if (totalMoney() >= 1) {
+							if (r[0] == nullptr) {
 								r[0] = choiceRace.at(1);
 								sp[0] = choicePower.at(1);
 								reinforcements = r[0]->getReinforcements();
@@ -164,40 +144,43 @@ void Player::picks_race(vector<Race *> raceVector, vector<Special_Power *> power
 								}
 								currentRace = 0;
 							}
-						}
-						remainingReinforcements = reinforcements;
-						currencyTokens[3] -= 1;
-						valid = true;
-					}
-					else {
-						cout << "Not enough money" << endl;
-						valid = false;
-					}
-					break;
-				case 3:
-					if (totalMoney() >= 2) {
-						if (r[0] == nullptr) {
-							r[0] = choiceRace.at(2);
-							sp[0] = choicePower.at(2);
-							reinforcements = r[0]->getReinforcements();
-							reinforcements += sp[0]->getReinforcements();
-							if (sp[0]->getName() == "Wealthy") {
-								currencyTokens[3] += 7;
+							else {
+								if (r[1] == nullptr) {
+									r[1] = choiceRace.at(1);
+									sp[1] = choicePower.at(1);
+									reinforcements = r[1]->getReinforcements();
+									reinforcements += sp[1]->getReinforcements();
+									if (sp[1]->getName() == "Wealthy") {
+										currencyTokens[3] += 7;
+									}
+									currentRace = 1;
+								}
+								else {
+									r[0] = choiceRace.at(1);
+									sp[0] = choicePower.at(1);
+									reinforcements = r[0]->getReinforcements();
+									reinforcements += sp[0]->getReinforcements();
+									if (sp[0]->getName() == "Wealthy") {
+										currencyTokens[3] += 7;
+									}
+									currentRace = 0;
+								}
 							}
-							currentRace = 0;
+							remainingReinforcements = reinforcements;
+							currencyTokens[3] -= 1;
+							valid = true;
 						}
 						else {
-							if (r[1] == nullptr) {
-								r[1] = choiceRace.at(2);
-								sp[1] = choicePower.at(2);
-								reinforcements = r[1]->getReinforcements();
-								reinforcements += sp[1]->getReinforcements();
-								if (sp[1]->getName() == "Wealthy") {
-									currencyTokens[3] += 7;
-								}
-								currentRace = 1;
-							}
-							else {
+							cin.clear();
+							cin.ignore(INT_MAX, '\n'); 
+							valid = false;
+							throw std::runtime_error("Not enough money");
+							
+						}
+						break;
+					case 3:
+						if (totalMoney() >= 2) {
+							if (r[0] == nullptr) {
 								r[0] = choiceRace.at(2);
 								sp[0] = choicePower.at(2);
 								reinforcements = r[0]->getReinforcements();
@@ -207,40 +190,43 @@ void Player::picks_race(vector<Race *> raceVector, vector<Special_Power *> power
 								}
 								currentRace = 0;
 							}
-						}
-						remainingReinforcements = reinforcements;
-						currencyTokens[3] -= 2;
-						valid = true;
-					}
-					else {
-						cout << "Not enough money" << endl;
-						valid = false;
-					}
-					break;
-				case 4:
-					if (totalMoney() >= 3) {
-						if (r[0] == nullptr) {
-							r[0] = choiceRace.at(3);
-							sp[0] = choicePower.at(3);
-							reinforcements = r[0]->getReinforcements();
-							reinforcements += sp[0]->getReinforcements();
-							if (sp[0]->getName() == "Wealthy") {
-								currencyTokens[3] += 7;
+							else {
+								if (r[1] == nullptr) {
+									r[1] = choiceRace.at(2);
+									sp[1] = choicePower.at(2);
+									reinforcements = r[1]->getReinforcements();
+									reinforcements += sp[1]->getReinforcements();
+									if (sp[1]->getName() == "Wealthy") {
+										currencyTokens[3] += 7;
+									}
+									currentRace = 1;
+								}
+								else {
+									r[0] = choiceRace.at(2);
+									sp[0] = choicePower.at(2);
+									reinforcements = r[0]->getReinforcements();
+									reinforcements += sp[0]->getReinforcements();
+									if (sp[0]->getName() == "Wealthy") {
+										currencyTokens[3] += 7;
+									}
+									currentRace = 0;
+								}
 							}
-							currentRace = 0;
+							remainingReinforcements = reinforcements;
+							currencyTokens[3] -= 2;
+							valid = true;
 						}
 						else {
-							if (r[1] == nullptr) {
-								r[1] = choiceRace.at(3);
-								sp[1] = choicePower.at(3);
-								reinforcements = r[1]->getReinforcements();
-								reinforcements += sp[1]->getReinforcements();
-								if (sp[1]->getName() == "Wealthy") {
-									currencyTokens[3] += 7;
-								}
-								currentRace = 1;
-							}
-							else {
+							cin.clear();
+							cin.ignore(INT_MAX, '\n'); 
+							valid = false;
+							throw std::runtime_error("Not enough money");
+							
+						}
+						break;
+					case 4:
+						if (totalMoney() >= 3) {
+							if (r[0] == nullptr) {
 								r[0] = choiceRace.at(3);
 								sp[0] = choicePower.at(3);
 								reinforcements = r[0]->getReinforcements();
@@ -250,40 +236,43 @@ void Player::picks_race(vector<Race *> raceVector, vector<Special_Power *> power
 								}
 								currentRace = 0;
 							}
-						}
-						remainingReinforcements = reinforcements;
-						currencyTokens[3] -= 3;
-						valid = true;
-					}
-					else {
-						cout << "Not enough money" << endl;
-						valid = false;
-					}
-					break;
-				case 5:
-					if (totalMoney() >= 4) {
-						if (r[0] == nullptr) {
-							r[0] = choiceRace.at(4);
-							sp[0] = choicePower.at(4);
-							reinforcements = r[0]->getReinforcements();
-							reinforcements += sp[0]->getReinforcements();
-							if (sp[0]->getName() == "Wealthy") {
-								currencyTokens[3] += 7;
+							else {
+								if (r[1] == nullptr) {
+									r[1] = choiceRace.at(3);
+									sp[1] = choicePower.at(3);
+									reinforcements = r[1]->getReinforcements();
+									reinforcements += sp[1]->getReinforcements();
+									if (sp[1]->getName() == "Wealthy") {
+										currencyTokens[3] += 7;
+									}
+									currentRace = 1;
+								}
+								else {
+									r[0] = choiceRace.at(3);
+									sp[0] = choicePower.at(3);
+									reinforcements = r[0]->getReinforcements();
+									reinforcements += sp[0]->getReinforcements();
+									if (sp[0]->getName() == "Wealthy") {
+										currencyTokens[3] += 7;
+									}
+									currentRace = 0;
+								}
 							}
-							currentRace = 0;
+							remainingReinforcements = reinforcements;
+							currencyTokens[3] -= 3;
+							valid = true;
 						}
 						else {
-							if (r[1] == nullptr) {
-								r[1] = choiceRace.at(4);
-								sp[1] = choicePower.at(4);
-								reinforcements = r[1]->getReinforcements();
-								reinforcements += sp[1]->getReinforcements();
-								if (sp[1]->getName() == "Wealthy") {
-									currencyTokens[3] += 7;
-								}
-								currentRace = 1;
-							}
-							else {
+							cin.clear();
+							cin.ignore(INT_MAX, '\n');
+							valid = false;
+							throw std::runtime_error("Not enough money");
+							
+						}
+						break;
+					case 5:
+						if (totalMoney() >= 4) {
+							if (r[0] == nullptr) {
 								r[0] = choiceRace.at(4);
 								sp[0] = choicePower.at(4);
 								reinforcements = r[0]->getReinforcements();
@@ -293,40 +282,43 @@ void Player::picks_race(vector<Race *> raceVector, vector<Special_Power *> power
 								}
 								currentRace = 0;
 							}
-						}
-						remainingReinforcements = reinforcements;
-						currencyTokens[3] -= 4;
-						valid = true;
-					}
-					else {
-						cout << "Not enough money" << endl;
-						valid = false;
-					}
-					break;
-				case 6:
-					if (totalMoney() >= 5) {
-						if (r[0] == nullptr) {
-							r[0] = choiceRace.at(5);
-							sp[0] = choicePower.at(5);
-							reinforcements = r[0]->getReinforcements();
-							reinforcements += sp[0]->getReinforcements();
-							if (sp[0]->getName() == "Wealthy") {
-								currencyTokens[3] += 7;
+							else {
+								if (r[1] == nullptr) {
+									r[1] = choiceRace.at(4);
+									sp[1] = choicePower.at(4);
+									reinforcements = r[1]->getReinforcements();
+									reinforcements += sp[1]->getReinforcements();
+									if (sp[1]->getName() == "Wealthy") {
+										currencyTokens[3] += 7;
+									}
+									currentRace = 1;
+								}
+								else {
+									r[0] = choiceRace.at(4);
+									sp[0] = choicePower.at(4);
+									reinforcements = r[0]->getReinforcements();
+									reinforcements += sp[0]->getReinforcements();
+									if (sp[0]->getName() == "Wealthy") {
+										currencyTokens[3] += 7;
+									}
+									currentRace = 0;
+								}
 							}
-							currentRace = 0;
+							remainingReinforcements = reinforcements;
+							currencyTokens[3] -= 4;
+							valid = true;
 						}
 						else {
-							if (r[1] == nullptr) {
-								r[1] = choiceRace.at(5);
-								sp[1] = choicePower.at(5);
-								reinforcements = r[1]->getReinforcements();
-								reinforcements += sp[1]->getReinforcements();
-								if (sp[1]->getName() == "Wealthy") {
-									currencyTokens[3] += 7;
-								}
-								currentRace = 1;
-							}
-							else {
+							cin.clear();
+							cin.ignore(INT_MAX, '\n');
+							valid = false;
+							throw std::runtime_error("Not enough money");
+							
+						}
+						break;
+					case 6:
+						if (totalMoney() >= 5) {
+							if (r[0] == nullptr) {
 								r[0] = choiceRace.at(5);
 								sp[0] = choicePower.at(5);
 								reinforcements = r[0]->getReinforcements();
@@ -336,27 +328,58 @@ void Player::picks_race(vector<Race *> raceVector, vector<Special_Power *> power
 								}
 								currentRace = 0;
 							}
+							else {
+								if (r[1] == nullptr) {
+									r[1] = choiceRace.at(5);
+									sp[1] = choicePower.at(5);
+									reinforcements = r[1]->getReinforcements();
+									reinforcements += sp[1]->getReinforcements();
+									if (sp[1]->getName() == "Wealthy") {
+										currencyTokens[3] += 7;
+									}
+									currentRace = 1;
+								}
+								else {
+									r[0] = choiceRace.at(5);
+									sp[0] = choicePower.at(5);
+									reinforcements = r[0]->getReinforcements();
+									reinforcements += sp[0]->getReinforcements();
+									if (sp[0]->getName() == "Wealthy") {
+										currencyTokens[3] += 7;
+									}
+									currentRace = 0;
+								}
+							}
+							remainingReinforcements = reinforcements;
+							currencyTokens[3] -= 5;
+							valid = true;
 						}
-						remainingReinforcements = reinforcements;
-						currencyTokens[3] -= 5;
-						valid = true;
-					}
-					else {
-						cout << "Not enough money" << endl;
+						else {
+							cin.clear();
+							cin.ignore(INT_MAX, '\n');
+							valid = false;
+							throw std::runtime_error("Not enough money");
+							
+							
+						}
+						break;
+					default:
 						valid = false;
-					}
-					break;
-				default:
-					cout << "invalid input" << endl;
+						throw std::runtime_error("Please enter a number between 1 and 6");
+						
+						break;
+					};
+				}
+				else {
+					cin.clear();
+					cin.ignore(INT_MAX, '\n');
 					valid = false;
-					break;
-				};
+					throw std::runtime_error("Please enter a number between 1 and 6");
+					
+				}
 			}
-			else {
-				cin.clear();
-				cin.ignore(INT_MAX, '\n');
-				cout << "Please enter a valid number" << endl;
-				valid = false;
+			catch (const std::runtime_error& e) {
+				std::cout << e.what() << endl;;
 			}
 		} while (valid != true);
 	}
@@ -422,30 +445,38 @@ bool Player::conquers(Region *& r)
 	}
 	int numberUnitToSpend;
 	do {
-		
-		cin >> numberUnitToSpend;
-		if (cin.good())
-		{
-			if (numberUnitToSpend == 0) {
-				cout << "Going back to region selection" << endl;
-				return false;
-			}
-		
-			if (numberUnitToSpend > 0 && numberUnitToSpend <= remainingReinforcements) {
-				validNumber = true;
+		try {
+			cin >> numberUnitToSpend;
+			if (cin.good())
+			{
+				if (numberUnitToSpend == 0) {
+					cout << "Going back to region selection" << endl;
+					return false;
+				}
 
+				if (numberUnitToSpend > 0 && numberUnitToSpend <= remainingReinforcements) {
+					validNumber = true;
+
+				}
+				else {
+					string msg = "Please enter a number between 1 and ";
+					msg += remainingReinforcements;
+					throw std::runtime_error(msg);
+					
+				}
 			}
 			else {
-				cout << "Please enter a number between 1 and " << remainingReinforcements << endl;
+				cin.clear();
+				cin.ignore(INT_MAX, '\n');
+				string msg = "Please enter a number between 1 and ";
+				msg += remainingReinforcements;
+				throw std::runtime_error(msg);
+
 			}
 		}
-		else {
-			cin.clear();
-			cin.ignore(INT_MAX, '\n');
-			cout << "Please enter a number between 1 and " << remainingReinforcements << endl;
-
+		catch (const std::runtime_error& e) {
+			std::cout << e.what() << endl;;
 		}
-
 	} while (!validNumber);
 	int attackerToken = numberUnitToSpend;
 	bool adjMountain = false;
@@ -515,6 +546,7 @@ bool Player::conquers(Region *& r)
 		if (attackerToken + rollValue > DefenderToken) {
 			attackerToken = remainingReinforcements;
 			possibleConquest = true;
+			inDecline = true;
 		}
 		else {
 			bool validInputDecline = false;
@@ -522,17 +554,22 @@ bool Player::conquers(Region *& r)
 			cout << "Would you like to go into decline ? 0 for no 1 for yes" << endl;
 			bool goIntoDecline = false;
 			do {
-				cin >> goIntoDecline;
-				if (cin.good())
-				{
-					validInputDecline = true;
-					inDecline = goIntoDecline;
-					return true;
+				try {
+					cin >> goIntoDecline;
+					if (cin.good())
+					{
+						validInputDecline = true;
+						inDecline = goIntoDecline;
+						return true;
+					}
+					else {
+						cin.clear();
+						cin.ignore(INT_MAX, '\n');
+						throw std::runtime_error("Please enter a number between 0 and 1");
+					}
 				}
-				else {
-					cin.clear();
-					cin.ignore(INT_MAX, '\n');
-					cout << "Please enter a number between 0 and 1" << endl;
+				catch (const std::runtime_error& e) {
+					std::cout << e.what() << endl;;
 				}
 			} while (!validInputDecline);
 		}
@@ -552,6 +589,9 @@ bool Player::conquers(Region *& r)
 		this->regions.resize(regions.size() + 1);
 		this->regions.at(regions.size() - 1) = r;
 		this->remainingReinforcements -= attackerToken;
+		if (this->remainingReinforcements == 0) {
+			inDecline = true;
+		}
 		if (getRace()->getName() == "Amazon") {
 			r->setRaceToken(new AmazonTokens());
 		}
@@ -902,30 +942,20 @@ void Player::firstConquest(Map *& m)
 		bool validInput = false;
 		cout << "Which region will you conquer ?" << endl;
 		do {
-
-			cin >> number;
-			if (cin.good())
-			{
-				if (number > 0 && number <= availableRegion.size()) {
-					bool worked = conquers(availableRegion.at(number - 1));
-					while (!worked) {
-						cout << "The first conquest failed you need to retry" << endl;
-						do {
-							for (size_t i = 0; i < availableRegion.size(); i++)
-							{
-								cout << "Conquest # " << i + 1 << ": " << " , Owned by :";
-								if (availableRegion.at(i)->getOwner() != nullptr && availableRegion.at(i)->getSpecialPowerTile() == nullptr) {
-									cout << " Player " << availableRegion.at(i)->getOwner()->getPlayerNumber() << " , Army count : " << availableRegion.at(i)->getArmy() << " , Army type : " << availableRegion.at(i)->getRaceToken() << " Region type : " << availableRegion.at(i)->getRegionType()->getName() << " , Special region trait : ";
-									for (size_t m = 0; m < availableRegion.at(i)->getOtherTiles().size(); m++)
-									{
-										cout << availableRegion.at(i)->getOtherTiles().at(m)->getName() << " ,";
-									}
-									cout << endl;
-								}
-								else {
-									if (availableRegion.at(i)->getArmy() != 0)
-									{
-										cout << "Lost tribes , Army count : " << availableRegion.at(i)->getArmy() << " Region type : " << availableRegion.at(i)->getRegionType()->getName() << " , Special region trait : ";
+			try {
+				cin >> number;
+				if (cin.good())
+				{
+					if (number > 0 && number <= availableRegion.size()) {
+						bool worked = conquers(availableRegion.at(number - 1));
+						while (!worked) {
+							cout << "The first conquest failed you need to retry" << endl;
+							do {
+								for (size_t i = 0; i < availableRegion.size(); i++)
+								{
+									cout << "Conquest # " << i + 1 << ": " << " , Owned by :";
+									if (availableRegion.at(i)->getOwner() != nullptr && availableRegion.at(i)->getSpecialPowerTile() == nullptr) {
+										cout << " Player " << availableRegion.at(i)->getOwner()->getPlayerNumber() << " , Army count : " << availableRegion.at(i)->getArmy() << " , Army type : " << availableRegion.at(i)->getRaceToken() << " Region type : " << availableRegion.at(i)->getRegionType()->getName() << " , Special region trait : ";
 										for (size_t m = 0; m < availableRegion.at(i)->getOtherTiles().size(); m++)
 										{
 											cout << availableRegion.at(i)->getOtherTiles().at(m)->getName() << " ,";
@@ -933,49 +963,73 @@ void Player::firstConquest(Map *& m)
 										cout << endl;
 									}
 									else {
-										cout << "No one , Army count : 0" << " Region type : " << availableRegion.at(i)->getRegionType()->getName() << " , Special region trait : ";
-										for (size_t m = 0; m < availableRegion.at(i)->getOtherTiles().size(); m++)
+										if (availableRegion.at(i)->getArmy() != 0)
 										{
-											cout << availableRegion.at(i)->getOtherTiles().at(m)->getName() << " ,";
+											cout << "Lost tribes , Army count : " << availableRegion.at(i)->getArmy() << " Region type : " << availableRegion.at(i)->getRegionType()->getName() << " , Special region trait : ";
+											for (size_t m = 0; m < availableRegion.at(i)->getOtherTiles().size(); m++)
+											{
+												cout << availableRegion.at(i)->getOtherTiles().at(m)->getName() << " ,";
+											}
+											cout << endl;
 										}
-										cout << endl;
+										else {
+											cout << "No one , Army count : 0" << " Region type : " << availableRegion.at(i)->getRegionType()->getName() << " , Special region trait : ";
+											for (size_t m = 0; m < availableRegion.at(i)->getOtherTiles().size(); m++)
+											{
+												cout << availableRegion.at(i)->getOtherTiles().at(m)->getName() << " ,";
+											}
+											cout << endl;
+										}
+									}
+
+								}
+								cin >> number;
+								if (cin.good())
+								{
+									if (number > 0 && number < availableRegion.size()) {
+
+										worked = conquers(availableRegion.at(number - 1));
+										validInput = true;
+									}
+									else {
+										string msg ="Please enter a number between 1 and " ;
+										msg += std::to_string(availableRegion.size());
+										throw std::runtime_error(msg);
+										validInput = false;
 									}
 								}
-
-							}
-							cin >> number;
-							if (cin.good())
-							{
-								if (number > 0 && number < availableRegion.size()) {
-
-									worked = conquers(availableRegion.at(number - 1));
-									validInput = true;
-								}
 								else {
-									cout << "Please enter a number between 1 and " << availableRegion.size() << endl;
-									validInput = false;
+									cin.clear();
+									cin.ignore(INT_MAX, '\n');
+									string msg = "Please enter a number between 1 and ";
+									msg += std::to_string(availableRegion.size());
+									throw std::runtime_error(msg);
 								}
-							}
-							else {
-								cin.clear();
-								cin.ignore(INT_MAX, '\n');
-								cout << "Please enter a number between 1 and " << availableRegion.size() << endl;
-							}
-						} while (!validInput);
+							} while (!validInput);
 
+						}
+						validInput = true;
 					}
-					validInput = true;
+					else {
+						string msg = "Please enter a number between 1 and ";
+						msg += availableRegion.size();
+						throw std::runtime_error(msg);
+						validInput = false;
+					}
 				}
 				else {
-					cout << "Please enter a number between 1 and " << availableRegion.size() << endl;
-					validInput = false;
+					cin.clear();
+					cin.ignore(INT_MAX, '\n');
+					string msg = "Please enter a number between 1 and ";
+					msg += availableRegion.size();
+					throw std::runtime_error(msg);
+					
 				}
 			}
-			else {
-				cin.clear();
-				cin.ignore(INT_MAX, '\n');
-				cout << "Please enter a number between 1 and " << availableRegion.size() << endl;
+			catch (const std::runtime_error& e) {
+				std::cout << e.what() << endl;;
 			}
+
 		} while (!validInput);
 	}
 	else {
@@ -1093,23 +1147,31 @@ void Player::findAllPossibleConquests(Map *& m)
 	bool validInput = false;
 	cout << "Which region will you conquer ?" << endl;
 	do {
-
-		cin >> number;
-		if (cin.good())
-		{
-			if (number > 0 && number <= availableRegion.size()) {
-				conquers(availableRegion.at(number - 1));
-				validInput = true;
+		try {
+			cin >> number;
+			if (cin.good())
+			{
+				if (number > 0 && number <= availableRegion.size()) {
+					conquers(availableRegion.at(number - 1));
+					validInput = true;
+				}
+				else {
+					string msg = "Please enter a number between 1 and ";
+					msg += std::to_string(availableRegion.size());
+					throw std::runtime_error(msg);
+					validInput = false;
+				}
 			}
 			else {
-				cout << "Please enter a number between 1 and " << availableRegion.size() << endl;
-				validInput = false;
+				cin.clear();
+				cin.ignore(INT_MAX, '\n');
+				string msg = "Please enter a number between 1 and ";
+				msg += std::to_string(availableRegion.size());
+				throw std::runtime_error(msg);
 			}
 		}
-		else {
-			cin.clear();
-			cin.ignore(INT_MAX, '\n');
-			cout << "Please enter a number between 1 and " << availableRegion.size() << endl;
+		catch (const std::runtime_error& e) {
+			std::cout << e.what() << endl;;
 		}
 	} while (!validInput);
 }
@@ -1126,18 +1188,245 @@ void Player::setPlayerNumber(int n)
 
 void Player::goIntoDecline()
 {
+	if (currentRace == 0) {
+		if (r[1] != nullptr) {
+			vector<int> regDel;
+			for (size_t i = 0; i < regions.size(); i++)
+			{
+				if (regions.at(i)->getRaceToken()->getName() == r[1]->getName()) {
+					regDel.push_back(i);
+				}
+			}
+			for (size_t i = 0; i < regDel.size(); i++)
+			{
+				regions.at(i)->setOwner(nullptr);
+				regions.at(i)->setArmy(0);
+				regions.erase(regions.begin() + i);
+			}
+		}
+		currentRace = 1;
+	}else{
+		if (r[0] != nullptr) {
+			vector<int> regDel;
+			for (size_t i = 0; i < regions.size(); i++)
+			{
+				if (regions.at(i)->getRaceToken()->getName() == r[0]->getName()) {
+					regDel.push_back(i);
+				}
+			}
+			for (size_t i = 0; i < regDel.size(); i++)
+			{
+				regions.at(i)->setOwner(nullptr);
+				regions.at(i)->setArmy(0);
+				regions.erase(regions.begin() + i);
+			}
+		}
+		currentRace = 0;
+	}
+	inDecline = false;
 }
 
 void Player::readyTroops()
 {
 }
 
-void Player::abandonRegion()
+void Player::abandonRegion(Map *& m)
 {
+	bool endAbandon = false;
+	while (!endAbandon) {
+		vector<Region *> av;
+		bool validRegion = false;
+		cout << "List of regions you can abandon : 0 to go back" << endl;
+		for (size_t i = 0; i < regions.size(); i++)
+		{
+			if (regions.at(i)->getRaceToken()->getName() == r[currentRace]->getName()) {
+				av.push_back(regions.at(i));
+			}
+		}if (av.size() > 1) {
+			do {
+				for (size_t i = 0; i < av.size(); i++)
+				{
+					cout << i + 1 << " :" << " , Army count : " << av.at(i)->getArmy() << " , Army type : " << av.at(i)->getRaceToken()->getName() << " Region type : " << av.at(i)->getRegionType()->getName() << " , Special region trait : ";
+					for (size_t m = 0; m < av.at(i)->getOtherTiles().size(); m++)
+					{
+						cout << av.at(i)->getOtherTiles().at(m)->getName() << " ,";
+					}
+					cout << endl;
+				}
+				int regionChoice = 0;
+				
+				try {
+					cin >> regionChoice;
+					if (cin.good())
+					{
+						if (regionChoice == 0) {
+							validRegion = true;
+							endAbandon = true;
+						}
+						else if (regionChoice > 0 && regionChoice <= av.size()) {
+							regionChoice -= 1;
+							for (size_t i = 0; i < regions.size(); i++)
+							{
+								if (regions.at(i)->regionNumber == av.at(regionChoice)->regionNumber) {
+									remainingReinforcements += regions.at(i)->getArmy();
+									regions.at(i)->setArmy(0);
+									regions.at(i)->setOwner(nullptr);
+									regions.at(i)->setRaceToken(nullptr);
+									regions.erase(regions.begin() + i);
+								}
+							}
+							validRegion = true;
+						}
+
+
+						else {
+							string msg = "Please enter a number between 0 and ";
+							msg += std::to_string(av.size());
+
+							throw std::runtime_error(msg);
+
+						}
+					}
+					else {
+						cin.clear();
+						cin.ignore(INT_MAX, '\n');
+						string msg = "Please enter a number between 0 and ";
+						msg += std::to_string(av.size());
+						throw std::runtime_error(msg);
+
+					}
+				}
+				catch (const std::runtime_error& e) {
+					std::cout << e.what() << endl;;
+				}
+
+			} while (!validRegion);
+
+		}
+		else {
+			endAbandon = true;
+		}
+	}
 }
 
-void Player::redeploy()
+void Player::redeploy(Map *& m)
 {
+	int numberUnitToRedeploy = 0;
+	if (playerNumber == 1) {
+		bool validReinf = false;
+		bool endReinf = false;
+		while (!endReinf) {
+				if (remainingReinforcements != 0) {
+					vector<Region *> av;
+					cout << "List of regions you can reinforce : 0 to go back" << endl;
+					for (size_t i = 0; i < regions.size(); i++)
+					{
+						if (regions.at(i)->getRaceToken()->getName() == r[currentRace]->getName()) {
+							av.push_back(regions.at(i));
+						}
+					}
+					for (size_t i = 0; i < av.size(); i++)
+					{
+						cout<< "Region "<< i + 1 << " : Army count : "<< av.at(i)->getArmy()<< endl;
+					}
+					bool validRegion = false;
+					int regionChoice = 0;
+					do {
+						try {
+							cin >> regionChoice;
+							if (cin.good())
+							{
+								if (regionChoice == 0) {
+									validRegion = true;
+									endReinf = true;
+								}
+								else if (regionChoice > 0 && regionChoice <= av.size()) {
+									regionChoice -= 1;
+									validRegion = true;
+								}
+
+
+								else {
+									string msg = "Please enter a number between 0 and ";
+									msg += std::to_string(av.size());
+									
+									throw std::runtime_error(msg);
+
+								}
+							}
+							else {
+								cin.clear();
+								cin.ignore(INT_MAX, '\n');
+								string msg = "Please enter a number between 0 and ";
+								msg += std::to_string(av.size());
+								throw std::runtime_error(msg);
+
+							}
+						}
+						catch (const std::runtime_error& e) {
+							std::cout << e.what() << endl;;
+						}
+					} while (!validRegion);
+					if (!endReinf) {
+						bool validunit = false;
+						cout << "remaining Units : " << remainingReinforcements << endl;
+						do {
+							try {
+								cin >> numberUnitToRedeploy;
+								if (cin.good())
+								{
+									if (numberUnitToRedeploy == 0) {
+										validunit = true;
+									}
+									if (numberUnitToRedeploy > 0 && numberUnitToRedeploy <= remainingReinforcements) {
+										av.at(regionChoice)->setArmy(av.at(regionChoice)->getArmy() + numberUnitToRedeploy);
+										remainingReinforcements -= numberUnitToRedeploy;
+										validunit = true;
+									}
+
+
+									else {
+										string msg = "Please enter a number between 0 and ";
+										msg += remainingReinforcements;
+										throw std::runtime_error(msg);
+
+									}
+								}
+								else {
+									cin.clear();
+									cin.ignore(INT_MAX, '\n');
+									string msg = "Please enter a number between 0 and ";
+									msg += remainingReinforcements;
+									throw std::runtime_error(msg);
+
+								}
+							}
+							catch (const std::runtime_error& e) {
+								std::cout << e.what() << endl;;
+							}
+						} while (!validunit);
+					}
+				}
+				else {
+					endReinf = true;
+				}
+			
+		}
+	}
+	else {
+		if (playerNumber != 4) {
+			vector<Region *> av;
+			for (size_t i = 0; i < regions.size(); i++)
+			{
+				if (regions.at(i)->getRaceToken()->getName() == r[currentRace]->getName()) {
+					av.push_back(regions.at(i));
+				}
+			}
+			if (av.size() > 0) {
+				av.at(0)->setArmy(av.at(0)->getArmy() + remainingReinforcements);
+			}
+		}
+	}
 }
 
 void Player::Update(int turn) {
@@ -1326,6 +1615,9 @@ void Player::AIOtherConquest(Map *& m) {
 			if (availableRegion.at(choice)->getArmy() != 0) {
 				notEmpty = true;
 			}
+			else {
+				unitToSpend = 1;
+			}
 			availableRegion.at(choice)->setOwner(this);
 			availableRegion.at(choice)->setArmy(unitToSpend);
 			this->regions.resize(regions.size() + 1);
@@ -1471,6 +1763,9 @@ void Player::AIFirstConquest(Map *& m) {
 			if (availableRegion.at(choice)->getArmy() != 0) {
 				notEmpty = true;
 			}
+			else {
+				unitToSpend = 1;
+			}
 			availableRegion.at(choice)->setOwner(this);
 			availableRegion.at(choice)->setArmy(unitToSpend);
 			this->regions.resize(regions.size() + 1);
@@ -1524,5 +1819,7 @@ void Player::AIFirstConquest(Map *& m) {
 			
 			AIOtherConquest(m);
 		}
-		
+		if(remainingReinforcements < 2){
+			inDecline = true;
+		}
 }

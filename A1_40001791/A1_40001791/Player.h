@@ -66,6 +66,6 @@ public:
 	void setPlayerNumber(int n);
 	void goIntoDecline();
 	void readyTroops();
-	void abandonRegion();
-	void redeploy();
+	void abandonRegion(Map *& m);
+	void redeploy(Map *& m);
 };

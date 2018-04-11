@@ -233,6 +233,7 @@ bool MapLoader::validMap(string path)
 			default:
 				break;
 			};
+			regions.at(i)->regionNumber = i;
 			regions.at(i)->setArmy(armyUnit);
 			regions.at(i)->setRegionSpecial(st);
 			regions.at(i)->setRegionType(rt);
